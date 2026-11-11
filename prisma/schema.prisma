@@ -1,0 +1,105 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  username     String   @unique
+  passwordHash String
+  role         String
+  teacherId    Int?
+  forceReset   Boolean  @default(false)
+  createdAt    DateTime @default(now())
+}
+
+model Teacher {
+  id        Int      @id @default(autoincrement())
+  name      String
+  teacherNo String?
+  username  String?
+}
+
+model Learner {
+  id              Int      @id
+  admissionNo     String   @unique
+  name            String
+  className       String?
+  stream          String?
+  parentPhone     String?
+  assessmentNo    String?
+  status          String   @default("Active")
+  graduatingClass String?
+  graduationYear  Int?
+  gender          String?
+}
+
+model Assessment {
+  id             Int      @id @default(autoincrement())
+  grade          String
+  term           String
+  year           Int
+  assessmentType String
+  deadline       String?
+  analyzed       Boolean  @default(false)
+  analyzedAt     String?
+  analysisCount  Int      @default(0)
+  createdAt      String
+  deleted        Boolean  @default(false)
+  deletedAt      String?
+  @@unique([grade, term, year, assessmentType])
+}
+
+model Score {
+  id                Int      @id @default(autoincrement())
+  learnerId         Int
+  learningArea      String
+  score             Float
+  maxScore          Float
+  term              String?
+  year              Int?
+  assessmentType    String?
+  assessmentId      Int?
+  gradeAtAssessment String?
+  streamAtAssessment String?
+}
+
+model TeacherAssignment {
+  id          Int    @id @default(autoincrement())
+  teacherId   Int
+  learningArea String
+  className   String
+  stream      String
+}
+
+model ClassTeacherAssignment {
+  id        Int    @id @default(autoincrement())
+  teacherId Int
+  className String
+  stream    String
+}
+
+model GraduatingClass {
+  id            Int    @id @default(autoincrement())
+  label         String @unique
+  graduationYear Int
+  createdAt     String
+}
+
+model GraduatingClassMember {
+  id                Int @id @default(autoincrement())
+  graduatingClassId Int
+  learnerId         Int
+  originalGrade     String?
+  originalStream    String?
+  @@unique([graduatingClassId, learnerId])
+}
+
+model Setting {
+  key   String @id
+  value String
+}

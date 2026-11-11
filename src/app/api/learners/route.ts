@@ -1,0 +1,2 @@
+import {NextResponse} from "next/server";import {requireUser} from "@/lib/auth";import {prisma} from "@/lib/prisma";
+export async function GET(){const u=await requireUser();if(!u)return NextResponse.json({error:"Unauthorized"},{status:401});const where=u.role==="Administrator"?{}:{status:"Active"};const items=await prisma.learner.findMany({where,orderBy:[{className:"asc"},{stream:"asc"},{name:"asc"}],take:2000});return NextResponse.json({items});}

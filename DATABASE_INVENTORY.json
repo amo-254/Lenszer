@@ -1,0 +1,23 @@
+{
+  "database_file": "cbe_pms(2).db",
+  "tables": {
+    "assessments": 5,
+    "class_teacher_assignments": 6,
+    "graduating_class_members": 0,
+    "graduating_classes": 0,
+    "learners": 319,
+    "scores": 4484,
+    "settings": 9,
+    "teacher_assignments": 55,
+    "teachers": 12,
+    "users": 13
+  },
+  "roles": {
+    "Administrator": 1,
+    "Teacher": 12
+  },
+  "notes": [
+    "password_display is intentionally excluded from migration",
+    "SQLite database itself is not bundled into the source ZIP"
+  ]
+}

@@ -1,0 +1,2 @@
+import {NextResponse} from "next/server";import {requireUser} from "@/lib/auth";import {prisma} from "@/lib/prisma";
+export async function GET(req:Request){const u=await requireUser();if(!u)return NextResponse.json({error:"Unauthorized"},{status:401});const grade=new URL(req.url).searchParams.get("grade")||"7";const items=await prisma.learner.findMany({where:{className:grade,status:"Active"},orderBy:[{stream:"asc"},{name:"asc"}],select:{id:true,admissionNo:true,name:true,stream:true}});return NextResponse.json({items});}
